@@ -1,0 +1,78 @@
+#-----------------------------
+# DEFINICIÓN DE FUNCIONES
+#-----------------------------
+
+# Comprueba si el jugador especificado tiene el permiso necesario y suficiente saldo para usar una habilidad.
+# Si el jugador tiene el permiso y suficiente saldo, se deduce el costo del saldo del jugador,
+# se otorga el permiso, se envía un mensaje al jugador y se reproduce un sonido.
+# Si el jugador no tiene el permiso o suficiente saldo, se envía un mensaje al jugador y se devuelve falso.
+#
+# @param player El jugador a comprobar.
+# @param permission El permiso necesario para usar la habilidad.
+# @param cost El costo de la habilidad en VM.
+# @param message El mensaje para enviar al jugador si la habilidad se compra con éxito.
+# @param loop Si se debe repetir el proceso o no.
+# @return Verdadero si el jugador ya tiene la habilidad, falso en caso contrario.
+function check_skill(player: offline player, permission: text, cost: number, message: text, loop: boolean):: boolean:
+    if {_player} does not have permission {_permission}:
+        if {_player}'s account is more than or equal to {_cost}:
+            send "%{aurora_prefix}% %{_message}%" to {_player}
+            remove {_cost} from balance of {_player}
+            make console execute command "lp user %{_player}% permission set %{_permission}% true"
+            play sound "block.anvil.use" to {_player}
+        else:
+            send "%{aurora_prefix}% No tienes dinero suficiente. Para esta habilidad necesitas %{_cost}% VM." to {_player}
+        return false
+    return true
+
+
+#-----------------------------
+# DEFINICIÓN DE REGLAS
+#-----------------------------
+
+# Regla que permite al jugador curarse durante las noches
+on bed enter:
+    heal the player
+
+# Si hay un spawner, kaboom shakalaka
+on spawn of monster:
+    if spawn reason is mob spawner:
+        create a safe explosion with force 4 at event-entity
+        drop 1 enchanted golden apple at event-entity
+        loop blocks in radius 4 around event-entity:
+            delete loop-block
+
+# Si un jugador muere, se borran todos los monstruos en un radio de 7 bloques
+on death of player:
+    loop all monsters in radius 7 around victim:
+        clear loop-entity
+
+# Limita la cantidad de amatistas que se pueden obtener de un bloque de amatista
+on mine of amethyst cluster:
+    cancel event
+    set event-block to air
+    drop 1 amethyst shard at event-block
+    chance of 50
+    drop 1 amethyst shard at event-block
+
+# Devuelve a jugador a la tierra si es que no tiene el permiso para ir a la tierra
+on teleport:
+    wait 1 second
+    player is in "tierra_1"
+    player doesn't have permission "sas.tierra"
+    make player execute command "/spawn lobby"
+    send "%{aurora_prefix}% Debes desbloquear el Pase a la Tierra! Revisa /quest y sigue las instrucciones."
+
+# Devuelve a jugador a la tierra si es que no tiene el permiso para ir al nether
+on teleport:
+    wait 1 second
+    player is in "nether"
+    player doesn't have permission "sas.nether"
+    make player execute command "/spawn lobby"
+    send "%{aurora_prefix}% Debes desbloquear el Pase al Nether! Revisa /quest y sigue las instrucciones."
+
+# Comprueba si el jugador entra a una región en la arena y lo envía de vuelta a towny.
+on region enter:
+    if player is in world "arena":
+        make player execute command "/warp towny"
+        make player execute command "/town spawn"

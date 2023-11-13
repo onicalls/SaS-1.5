@@ -1,0 +1,78 @@
+#-----------------------------
+# DEFINICIÓN DE VARIABLES
+#-----------------------------
+
+import:
+    dev.lone.itemsadder.api.ItemsAdder as IA
+
+aliases:
+    #COMIDA
+    comida1hp = cake, apple, golden apple, rotten flesh, baked potato, bread, cooked cod, cooked rabbit
+    comida15hp = beetroot soup, cooked chicken, cooked mutton, cooked salmon, golden carrot, mushroom stew, suspicious stew
+    comida2hp = cooked porkchop, pumpkin pie, rabbit stew, steak
+
+#-----------------------------
+# DEFINICIÓN DE REGLAS
+#-----------------------------
+
+# Cura al jugador al comer comida de 2 muslitos
+on consume of comida1hp:
+    heal player by 1 heart
+
+# Cura al jugador al comer comida de 3 muslitos
+on consume of comida15hp:
+    heal player by 1.5 heart
+
+# Cura al jugador al comer comida de 4 muslitos
+on consume of comida2hp:
+    heal player by 2 heart
+
+# Arregla errores que tienen los items que se beben en el IA
+on rightclick with wooden sword:
+    if "%lore of player's tool%" contains ("Durabilidad: 0 / 9" or "Durabilidad: 1 / 9"):
+        remove 1 of player's tool from the player
+        set {_botella} to IA.getCustomItem("sas:botella_vacia")
+        sender.getInventory().addItem({_botella})
+    else if "%lore of player's tool%" contains ("Durabilidad: 0 / 25" or "Durabilidad: 1 / 25"):
+        remove 1 of player's tool from the player
+        give 7 leather to the player
+    else if "%lore of player's tool%" contains ("Durabilidad: 0 / 10" or "Durabilidad: 1 / 10"):
+        remove 1 of player's tool from the player
+        give 1 bucket to the player
+    else if "%lore of player's tool%" contains ("5" and  "Prob de 1 HP"):
+        chance of 10%:
+            apply regeneration 1 to player for 50 ticks replacing existing effect
+
+
+#-----------------------------
+# DEFINICIÓN DE COMANDOS
+#-----------------------------
+
+command /gastronomia:
+    trigger:
+        #Gastronomía 1
+        if check_skill(player, "ia.user.recipe.gastronomia11", 100, "¡Has desbloqueado Gastronomía 1! Prueba craftear una licuadora.", {_loop}) is false:
+            stop
+        #Gastronomía 2
+        if check_skill(player, "ia.user.recipe.gastronomia12", 600, "¡Has desbloqueado Gastronomía 2! Prueba hacer Sushis.", {_loop}) is false:
+            stop
+        #Gastronomía 3
+        if check_skill(player, "ia.user.recipe.gastronomia13", 1800, "¡Has desbloqueado Gastronomía 3! Prueba hacer quesito.", {_loop}) is false:
+            stop
+        #Gastronomía 4
+        if check_skill(player, "ia.user.recipe.gastronomia14", 3600, "¡Has desbloqueado Gastronomía 4! Prueba hacer una rica pizza.", {_loop}) is false:
+            stop
+        #Gastronomía 5
+        if check_skill(player, "ia.user.recipe.gastronomia21", 3600, "¡Has desbloqueado Gastronomía 5! Prueba cocinar carne de Hoglin.", {_loop}) is false:
+            stop
+        #Gastronomía 6
+        if check_skill(player, "ia.user.recipe.gastronomia22", 4200, "¡Has desbloqueado Gastronomía 6! Prueba hacer sopita de araña.", {_loop}) is false:
+            stop
+        #Gastronomía 7
+        if check_skill(player, "ia.user.recipe.gastronomia23", 6000, "¡Has desbloqueado Gastronomía 7! Prueba hacer una cazuela de Hoglin.", {_loop}) is false:
+            stop
+        #Gastronomía 8
+        if check_skill(player, "ia.user.recipe.gastronomia24", 9600, "¡Has desbloqueado Gastronomía 8! Prueba hacer Sopa Picante.", {_loop}) is false:
+            stop
+        else:
+            send "%{aurora_prefix}% Ya tienes todos los niveles de Gastronomía."

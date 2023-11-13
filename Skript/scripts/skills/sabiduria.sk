@@ -1,0 +1,99 @@
+#-----------------------------
+# DEFINICIÓN DE VARIABLES
+#-----------------------------
+
+aliases:
+    sabiduria1 = book, bookshelf
+
+#-----------------------------
+# DEFINICIÓN DE REGLAS
+#-----------------------------
+
+# Permite que un jugador pueda o no craftear un objeto de sabiduría 1
+on craft sabiduria1:
+    if player does not have permission "ia.user.recipe.sabiduria11":
+        cancel event
+        send "%{aurora_prefix}% Debes conseguir Sabiduría 1!"
+
+
+# Determina si un jugador puede meter libros dentro de una librería
+on rightclick on bookshelf:
+    if player is holding a book:
+        if player have permission "ia.user.recipe.sabiduria12":
+            drop 3 xp at event-block
+            remove 1 of player's tool from the player
+
+# Determina si un jugador puede encantar en la mesa de encantamientos
+on rightclick on enchanting table:
+    if player does not have permission "skill.enchant":
+        cancel event
+        send "%{aurora_prefix}% No sabes el arte de los encantamientos. Necesitas Sabiduría 3 para aprender Standard Galactic Alphabet." to player
+    else:
+        cancel event
+        set {_librerias} to 0
+        loop blocks in radius 3 around event-block:
+            if loop-block is book shelf:
+                add 1 to {_librerias}
+        if {_librerias} is more than 17:
+            execute command "/enchant %player%"
+        else:
+            send "%{aurora_prefix}% Se necesita que hayan 18 librerías cerca de la mesa para funcionar. Librerías contadas: %{_librerias}%" to player
+
+# Determina si un jugador puede enseñar el libro de stonks
+on rightclick on wandering trader with paper:
+    if "%lore of player's tool%" contains "Vendedor":
+        if player have permission "ia.user.recipe.sabiduria14":
+            cancel event
+            remove 1 of player's tool from the player
+            play sound "sas.conrazon" with volume 0.2 at player
+            wait 3 seconds
+            summon villager at event-entity
+            apply invisibility 1 to event-entity for 3 seconds replacing existing effect
+            push event-entity upwards at speed 9
+            wait 1 second
+            kill event-entity
+
+# Determina si un jugador puede hablar con un aldeano
+on rightclick on villager:
+    if player does not have permission "skill.villager":
+        cancel event
+        send "%{aurora_prefix}% No eres capaz de entender su idioma, ni él el tuyo. Necesitas Sabiduría 4 para aprender Hmmniano." to player
+
+# Determina si un jugador puede usar una mesa de pociones
+on rightclick on brewing stand:
+    if player does not have permission "skill.pociones":
+        cancel event
+        send "%{aurora_prefix}% No eres capaz de entender usarlo parece ser muy complejo. Necesitas Sabiduría 5 para aprender a usar pociones." to player        
+
+#-----------------------------
+# DEFINICIÓN DE COMANDOS
+#-----------------------------
+
+command /sabiduria:
+    trigger:
+        #Sabiduría 1
+        if check_skill(player, "ia.user.recipe.sabiduria11", 100, "¡Has desbloqueado Sabiduría 1! Crea una libro para completar el tutorial.", {_loop}) is false:
+            stop
+        #Sabiduría 2
+        if check_skill(player, "ia.user.recipe.sabiduria12", 600, "¡Has desbloqueado Sabiduría 2! Prueba meter libros en las estanterías.", {_loop}) is false:
+            stop
+        #Sabiduría 3
+        if check_skill(player, "ia.user.recipe.sabiduria13", 1800, "¡Has desbloqueado Sabiduría 3! Prueba construir una mesa de encantamientos.", {_loop}) is false:
+            stop
+        #Sabiduría 4
+        if check_skill(player, "ia.user.recipe.sabiduria14", 3600, "¡Has desbloqueado Sabiduría 4! Prueba crear el diccionario Hmniano.", {_loop}) is false:
+            stop
+        #Sabiduría 5
+        if check_skill(player, "ia.user.recipe.sabiduria21", 3600, "¡Has desbloqueado Sabiduría 5! Prueba crear pociones.", {_loop}) is false:
+            stop
+        #Sabiduría 6
+        if check_skill(player, "ia.user.recipe.sabiduria22", 4200, "¡Has desbloqueado Sabiduría 6! Prueba crear pociones que buscan diamantes.", {_loop}) is false:
+            stop
+        #Sabiduría 7
+        if check_skill(player, "ia.user.recipe.sabiduria23", 6000, "¡Has desbloqueado Sabiduría 7! Prueba fabricar totems de Adriana.", {_loop}) is false:
+            stop
+        #Sabiduría 8
+        if check_skill(player, "ia.user.recipe.sabiduria24", 9600, "¡Has desbloqueado Sabiduría 8! Prueba construir el corazón de vida.", {_loop}) is false:
+            stop
+        else:
+            send "%{aurora_prefix}% Ya tienes todos los niveles de Sabiduría."

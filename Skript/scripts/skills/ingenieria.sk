@@ -1,0 +1,78 @@
+#-----------------------------
+# DEFINICIÓN DE VARIABLES
+#-----------------------------
+
+on script load:
+    #Convertidor Pasivo
+    set {pasivotierra::*} to string, chicken, feather, egg, beef, leather, porkchop, rabbit, mutton, rabbit hide, ink sac, glow ink sac, scute
+    #Convertidor Agresivo
+    set {agresivotierra::*} to potato, carrot, iron ingot, slime ball, ender pearl, bow, arrow, string, rotten flesh, spider eye, bone, gunpowder
+    #Convertidor Pasivo Infernal
+    set {pasivoinfernal::*} to string, feather
+    #Convertidor Agresivo Infernal
+    set {agresivoinfernal::*} to bone, blaze rod, gold ingot, magma cream, enderpearl, porkchop, bow, rotten flesh, coal, stone sword, golden sword, phantom membrane, crossbow, arrow, leather, golden axe, ghast tear, gunpowder
+
+#-----------------------------
+# DEFINICIÓN DE REGLAS
+#-----------------------------
+
+# Permite al usuario obtener loot pasivo de la Tierra
+on rightclick with paper:
+    if "%lore of player's tool%" contains "mob pasivo" and "Tierra":
+        remove 1 of player's tool from the player
+        set {_item} to a random item out of {pasivoTierra::*}
+        drop {_item} at player
+
+# Permite al usuario obtener loot agresivo de la Tierra
+on rightclick with paper:
+    if "%lore of player's tool%" contains "mob agresivo" and "Tierra":
+        remove 1 of player's tool from the player
+        set {_item} to a random item out of {agresivoTierra::*}
+        drop {_item} at player
+
+# Permite al usuario obtener loot pasivo del nether
+on rightclick with paper:
+    if "%lore of player's tool%" contains "mob pasivo" and "Nether":
+        remove 1 of player's tool from the player
+        set {_item} to a random item out of {pasivoinfernal::*}
+        drop {_item} at player
+
+# Permite al usuario obtener loot agresivo del nether
+on rightclick with paper:
+    if "%lore of player's tool%" contains "mob agresivo" and "Nether":
+        remove 1 of player's tool from the player
+        set {_item} to a random item out of {agresivoinfernal::*}
+        drop {_item} at player        
+
+#-----------------------------
+# DEFINICIÓN DE COMANDOS
+#-----------------------------
+
+command /ingenieria:
+    trigger:
+        #Ingeniería 1
+        if check_skill(player, "ia.user.recipe.ingenieria11", 100, "¡Has desbloqueado Ingeniería 1! Prueba craftear el horno de redstone.", {_loop}) is false:
+            stop
+        #Ingeniería 2
+        if check_skill(player, "ia.user.recipe.ingenieria12", 600, "¡Has desbloqueado Ingeniería 2! Prueba craftear un reciclador pasivo.", {_loop}) is false:
+            stop
+        #Ingeniería 3
+        if check_skill(player, "ia.user.recipe.ingenieria13", 1800, "¡Has desbloqueado Ingeniería 3! Prueba craftear un reciclador agresivo.", {_loop}) is false:
+            stop
+        #Ingeniería 4
+        if check_skill(player, "ia.user.recipe.ingenieria14", 3600, "¡Has desbloqueado Ingeniería 4! Prueba craftear una máquina de combinación.", {_loop}) is false:
+            stop
+        #Ingeniería 5
+        if check_skill(player, "ia.user.recipe.ingenieria21", 3600, "¡Has desbloqueado Ingeniería 5! Prueba hacer la Máquina de Flechas.", {_loop}) is false:
+            stop
+        #Ingeniería 6
+        if check_skill(player, "ia.user.recipe.ingenieria22", 4200, "¡Has desbloqueado Ingeniería 6! Prueba hacer el reciclador infernal pasivo.", {_loop}) is false:
+            stop
+        #Ingeniería 7
+        if check_skill(player, "ia.user.recipe.ingenieria23", 6000, "¡Has desbloqueado Ingeniería 7! Prueba hacer el reciclador infernal agresivo.", {_loop}) is false:
+            stop
+        #Ingeniería 8
+        if check_skill(player, "ia.user.recipe.ingenieria24", 9600, "¡Has desbloqueado Ingeniería 8! Prueba hacer el Aleador.", {_loop}) is false:
+            stop
+        else:
+            send "%{aurora_prefix}% Ya tienes todos los niveles de Ingeniería."
