@@ -63,16 +63,16 @@ command /gastronomia:
         if check_skill(player, "ia.user.recipe.gastronomia14", 3600, "¡Has desbloqueado Gastronomía 4! Prueba hacer una rica pizza.", {_loop}) is false:
             stop
         #Gastronomía 5
-        if check_skill(player, "ia.user.recipe.gastronomia21", 3600, "¡Has desbloqueado Gastronomía 5! Prueba cocinar carne de Hoglin.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.gastronomia21", 3600, "¡Has desbloqueado Gastronomía 5! Prueba cocinar carne de Hoglin.", {_loop}) is false:
             stop
         #Gastronomía 6
-        if check_skill(player, "ia.user.recipe.gastronomia22", 4200, "¡Has desbloqueado Gastronomía 6! Prueba hacer sopita de araña.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.gastronomia22", 4200, "¡Has desbloqueado Gastronomía 6! Prueba hacer sopita de araña.", {_loop}) is false:
             stop
         #Gastronomía 7
-        if check_skill(player, "ia.user.recipe.gastronomia23", 6000, "¡Has desbloqueado Gastronomía 7! Prueba hacer una cazuela de Hoglin.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.gastronomia23", 6000, "¡Has desbloqueado Gastronomía 7! Prueba hacer una cazuela de Hoglin.", {_loop}) is false:
             stop
         #Gastronomía 8
-        if check_skill(player, "ia.user.recipe.gastronomia24", 9600, "¡Has desbloqueado Gastronomía 8! Prueba hacer Sopa Picante.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.gastronomia24", 9600, "¡Has desbloqueado Gastronomía 8! Prueba hacer Sopa Picante.", {_loop}) is false:
             stop
         else:
             send "%{aurora_prefix}% Ya tienes todos los niveles de Gastronomía."

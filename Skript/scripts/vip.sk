@@ -1,0 +1,23 @@
+command /tfly:
+	permission: oni.vip
+	trigger:
+		if player has permission "oni.vip":
+			if player is in world "world":
+				if flight mode of player is false:
+					set flight mode of player to true
+					send "%{aurora_prefix}% modo fly activado!"
+				else:
+					set flight mode of player to false
+					send "%{aurora_prefix}% modo fly desactivado."
+			else:
+				send "%{aurora_prefix}% solo puedes activar el modo fly en el mundo de Towns."
+                
+on player world change:
+	if player does not have permission "group.admin" or "group.owner" or "group.mod":
+		if player has permission "group.vip":
+			if player is in world "world":
+				set flight mode of player to true
+				send "%{aurora_prefix}% modo fly activado!"
+				stop
+			set flight mode of player to false
+			send "%{aurora_prefix}% modo fly desactivado."

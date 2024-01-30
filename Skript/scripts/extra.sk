@@ -1,0 +1,63 @@
+import:
+    dev.lone.itemsadder.api.ItemsAdder
+  
+on load:
+    set {codigo} to ItemsAdder.getCustomItem("sas:codigo")
+
+
+on portal:
+	cancel event
+  
+on spawn of phantom:
+	if event-entity is not in world "nether":
+		cancel event
+
+on spawn of wither:
+	if event-entity is not in world "arena":
+		cancel event
+
+on spawn of zombified piglin:
+	cancel event
+
+on damage:
+	if victim is a player:
+		if victim is in world "nether":
+			if attacker is a monster:
+				damage victim by 2
+			#if attacker is ghast:
+				#damage victim by 6
+
+on damage:
+	victim is in world "arena"
+	victim is zombie or skeleton or iron golem
+	chance of 20%:
+		apply slow 1 to victim for 5 seconds
+
+on damage:
+	victim is in world "arena"
+	damage was caused by projectile
+	chance of 60%:
+		push the victim in the direction of the projectile at speed 5
+
+on damage:
+	victim is in world "arena"
+	damage was caused by projectile
+	chance of 20%:
+		teleport victim to the attacker
+
+on damage:
+	victim is zombie or skeleton or iron golem
+	set victim's target to the attacker
+
+on rightclick holding a player head:
+	make player execute command "/menu_help"
+
+       
+on break:
+	if entity is a player:
+		chance of 0.01%:
+			play sound "item.trident.riptide_3" with pitch 3 to player
+			sender.getInventory().addItem({codigo})
+            
+on skript start:
+    execute console command "/sk reload all"

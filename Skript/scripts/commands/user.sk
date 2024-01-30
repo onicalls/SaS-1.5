@@ -1,0 +1,125 @@
+#----------------------------------------------------------------------------------------------------------------------
+#Comandos de Usuarios
+#----------------------------------------------------------------------------------------------------------------------
+
+#Comandos de servers:
+command /servers:
+  trigger:
+    make player execute command "menu_server"
+
+command /sas:
+  trigger:
+    send player to server "sas-towny-1"
+    
+command /anarquico:
+  trigger:
+    send player to server "sas-anarquico"
+
+#Comandos de mundo:
+command /towns:
+  trigger:
+    make player execute command "/xwr tp world"
+
+command /tierra:
+  permission: sas.tierra
+  permission message: &l[&c&lBOT&f&l]&r &6Aurora:&r ¡Necesitas aprender el Pergamino de la Tierra!
+  trigger:
+    make player execute command "/xwr tp tierra_1"
+    
+command /nether:
+  permission: sas.nether
+  permission message: &l[&c&lBOT&f&l]&r &6Aurora:&r ¡Necesitas aprender el Pergamino del Infierno!
+  trigger:
+    make player execute command "/xwr tp nether"
+
+#Comandos de Alias
+#Comando que enviará como acceder a la tienda
+command /tienda:
+    trigger:
+        send "" to the player
+        send "&f                 &9&lᴛɪᴇɴᴅᴀ             &f" to the player
+        send "&f" to the player
+        send "&f    Revisa todos los rangos que" to the player
+        send "&f están a la venta dentro del servidor." to the player
+        send "&f" to the player
+        send "              &9&lʟɪɴᴋ: <url:https://www.sascraft.club/tienda/rangos>&b&nClick aquí" to the player
+        send "&f" to the player
+
+#Comando que abre el menú de Skills
+command /skills:
+    trigger:
+        make player execute command "menu_skills"
+
+#Comando que abre el menú de Mundos
+command /mundos:
+    trigger:
+        make player execute command "w"
+
+#Comando que abre el menú de Ayuda
+command /ayuda:
+    trigger:
+        make player execute command "help"
+     
+#Comando que abre el menú de Ayuda
+command /menu:
+    trigger:
+        make player execute command "help"
+
+#Comando que abre el menú de w
+command /w:
+    trigger:
+        make player execute command "menu_w"
+
+#Comando que abre el menú de help
+command /help:
+    trigger:
+        make player execute command "menu_help"
+
+#Comando que abre el menú de warps
+command /warps:
+    trigger:
+        make player execute command "menu_warps"
+        
+#Comando que muestra la página con la wiki de SaS en Hispano
+command /web:
+    trigger:
+        send "%{aurora_prefix}% <url:https://wiki.sascraft.club/>https://wiki.sascraft.club/" to the player
+
+#Comando que muestra el discord de SaS
+command /discord:
+    trigger:
+        send "" to the player
+        send "&f                    &9&lᴅɪꜱᴄᴏʀᴅ            &f" to the player
+        send "&f" to the player
+        send "&f  Unete a nuestro discord para estár al tanto" to the player
+        send "&f  de todas las novedades del servidor." to the player
+        send "&f" to the player
+        send "                &9&lʟɪɴᴋ: <url:https://discord.gg/ZrCrdAzqmG>&b&nClick aquí" to the player
+        send "&f" to the player
+        
+#Reglas del servidor
+command /reglas:
+    trigger:
+        send "%{aurora_prefix}% Hola" to the player 
+
+# Función que envia items a un cofre
+function sendItemToChest(player: offline player, item: item, itemtype: item type, eventBlock: block):
+    loop blocks in radius 10 around {_eventBlock}:
+        if loop-block is chest:
+            if inventory of loop-block contains {_itemtype}:
+                if loop-block has enough space for {_item}:  
+                    send "Se ha enviado: %{_item}%" to {_player}
+                    add {_item} to inventory of loop-block
+                    remove {_item} from inventory of {_eventBlock}
+                    stop
+                else:
+                    send "No hay suficiente espacio en el cofre para enviar %{_item}%" to {_player}
+                    stop
+    send "No se ha detectado ningún cofre donde poder enviar %{_item}%." to {_player}
+
+on rightclick on trapped chest:
+    if player is sneaking:
+        loop items in inventory of event-block:
+            set {_itemtype} to type of loop-value
+            set {_item} to loop-value
+            sendItemToChest(player, {_item}, {_itemtype}, event-block)

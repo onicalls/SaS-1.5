@@ -1,0 +1,48 @@
+#Comando que sincroniza los archivos del chat
+#CommandReload
+command /skrc:
+  permission: group.administrador
+  trigger:
+    send redis message "001 skript reload commands" to channel "sas"
+
+# Comando que sincroniza los archivos de skript en todos los servers
+# CommandReload
+command /skr:
+    permission: group.administrador
+    trigger:
+        if the command sender is a player:
+            make player execute command "/skript reload scripts"
+            stop
+        send redis message "001 skript reload scripts" to channel "sas"
+#----------------------------------------------------------------------------------------------------------------------
+#Comandos de Admins
+#----------------------------------------------------------------------------------------------------------------------
+
+#Comando para manda un usuario a un server.
+command /sendsv <player> <text>:
+    permission: group.administrador
+    trigger:
+        send arg-1 to server arg-2
+
+#Comando para reiniciar la barra de corazones de un jugador.
+command /sasmax <player>:
+    permission: group.administrador
+    trigger:
+        set max health of arg-1 to 10
+        
+#Comando para configurar las reglas de un mundo recién creado.
+command /sasworld:
+    permission: group.administrador
+    trigger:
+        make player execute command "/gamerule announceAdvancements: false"
+        make player execute command "/gamerule doFireTick: false"
+        make player execute command "/gamerule naturalRegeneration false"
+        make player execute command "/difficulty hard"
+        make player execute command "/chunky radius 10000"
+        make player execute command "/chunky border add"
+
+#Comando de prueba para probar comida
+command /sasfeedtest:
+    permission: group.administrador
+    trigger:
+        set the player's food level to 1

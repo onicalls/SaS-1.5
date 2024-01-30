@@ -34,16 +34,16 @@ command /medicina:
         if check_skill(player, "ia.user.recipe.medicina14", 3600, "¡Has desbloqueado Medicina 4! Prueba craftear adrenalina.", {_loop}) is false:
             stop
         #Medicina 5
-        if check_skill(player, "ia.user.recipe.medicina21", 3600, "¡Has desbloqueado Medicina 5! Prueba cultivar algodón infernal.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.medicina21", 3600, "¡Has desbloqueado Medicina 5! Prueba cultivar algodón infernal.", {_loop}) is false:
             stop
         #Medicina 6
-        if check_skill(player, "ia.user.recipe.medicina22", 4200, "¡Has desbloqueado Medicina 6! Prueba hacer vendas infernales.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.medicina22", 4200, "¡Has desbloqueado Medicina 6! Prueba hacer vendas infernales.", {_loop}) is false:
             stop
         #Medicina 7
-        if check_skill(player, "ia.user.recipe.medicina23", 6000, "¡Has desbloqueado Medicina 7! Prueba hacer botiquines infernales.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.medicina23", 6000, "¡Has desbloqueado Medicina 7! Prueba hacer botiquines infernales.", {_loop}) is false:
             stop
         #Medicina 8
-        if check_skill(player, "ia.user.recipe.medicina24", 9600, "¡Has desbloqueado Medicina 8! Prueba hacer adrenalina infernal.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.medicina24", 9600, "¡Has desbloqueado Medicina 8! Prueba hacer adrenalina infernal.", {_loop}) is false:
             stop
         else:
             send "%{aurora_prefix}% Ya tienes todos los niveles de Medicina."

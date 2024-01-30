@@ -3,7 +3,6 @@
 #-----------------------------
 
 aliases:
-    herreria3 = diamond helmet, diamond chestplate, diamond leggings, diamond boots, diamond shovel, diamond pickaxe
     herreria2 = iron helmet, iron chestplate, iron leggings, iron boots, iron shovel, iron pickaxe, iron axe, iron hoe, iron sword
 
 #-----------------------------
@@ -16,11 +15,6 @@ on craft herreria2:
         cancel event
         send "%{aurora_prefix}% Debes conseguir Herreria 2!"
 
-# Permite que un jugador pueda o no craftear un objeto de herrería 3
-on craft herreria3:
-    if player does not have permission "ia.user.recipe.herreria13":
-        cancel event
-        send "%{aurora_prefix}% Debes conseguir Herreria 3!"
 
 #-----------------------------
 # DEFINICIÓN DE COMANDOS
@@ -41,16 +35,16 @@ command /herreria:
         if check_skill(player, "ia.user.recipe.herreria14", 3600, "¡Has desbloqueado Herrería 4! Prueba construir tu propia armadura de rubí.", {_loop}) is false:
             stop
         #Herrería 5
-        if check_skill(player, "ia.user.recipe.herreria21", 3600, "¡Has desbloqueado Herrería 5! Prueba construir tu propia armadura de Netherite.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.herreria21", 3600, "¡Has desbloqueado Herrería 5! Prueba construir tu propia armadura de Netherite.", {_loop}) is false:
             stop
         #Herrería 6
-        if check_skill(player, "ia.user.recipe.herreria22", 4200, "¡Has desbloqueado Herrería 6! Prueba construir tu propia armadura de Meteorito.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.herreria22", 4200, "¡Has desbloqueado Herrería 6! Prueba construir tu propia armadura de Meteorito.", {_loop}) is false:
             stop
         #Herrería 7
-        if check_skill(player, "ia.user.recipe.herreria23", 6000, "¡Has desbloqueado Herrería 7! Prueba construir tu propia armadura de Griorito.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.herreria23", 6000, "¡Has desbloqueado Herrería 7! Prueba construir tu propia armadura de Griorito.", {_loop}) is false:
             stop
         #Herrería 8
-        if check_skill(player, "ia.user.recipe.herreria24", 9600, "¡Has desbloqueado Herrería 8! Prueba construir tu propia armadura de Adriorito.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.herreria24", 9600, "¡Has desbloqueado Herrería 8! Prueba construir tu propia armadura de Adriorito.", {_loop}) is false:
             stop
         else:
             send "%{aurora_prefix}% Ya tienes todos los niveles de Herrería." 

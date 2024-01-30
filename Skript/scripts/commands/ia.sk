@@ -1,0 +1,183 @@
+#----------------------------------------------------------------------------------------------------------------------
+#Comandos de IA
+#----------------------------------------------------------------------------------------------------------------------
+
+#Comando para los efectos de pociones en los objetos del IA
+#Entrada: nombre_jugador, identificador_pocion, intesidad_pocion, duracion_pocion
+command /iaeffect <player> <number> <number> <timespan>:
+    permission: group.administrador
+    trigger:
+        #ID 1 = Velocidad
+        if arg-2 is 1:
+            apply speed arg-3 to arg-1 for arg-4 replacing existing effect
+        #2 es salto alto
+        if arg-2 is 2:
+            apply jump boost arg-3 to arg-1 for arg-4 replacing existing effect
+        #3 es resistencia
+        if arg-2 is 3:
+            apply resistance arg-3 to arg-1 for arg-4 replacing existing effect
+        #4 es absorption
+        if arg-2 is 4:
+            apply absorption arg-3 to arg-1 for arg-4 replacing existing effect
+        #5 es resistencia al fuego
+        if arg-2 is 5:
+            apply fire resistance arg-3 to arg-1 for arg-4 replacing existing effect
+        #6 es fuerza
+        if arg-2 is 6:
+            apply strength arg-3 to arg-1 for arg-4 replacing existing effect
+            
+#Comando utilizado por IA para curar mediante curas
+command /helear <number> <player>:
+    permission: group.administrador
+    trigger:
+        heal arg-2 by arg-1 heart
+
+#Comando utilizado por IA para curar mediante curas
+command /sasheal <player> <number> <timespan>:
+    permission: group.administrador
+    trigger:
+        if arg-1 is holding a paper or golden apple or cooked porkchop in off hand:
+            send "%{aurora_prefix}% Para evitar errores se ha deshabilitado la opción de que tengas objetos curativos o invocadores en la mano izquierda." to arg-1
+        else:
+            play sound "sas.vendaje" at arg-1
+            apply regeneration arg-2 to arg-1 for arg-3 replacing existing effect
+            remove 1 of arg-1's tool from the arg-1
+
+#Comando utilizado por IA para obtener items de otros plugins
+command /sasitem <player> <number>:
+    permission: group.administrador
+    trigger:
+        if arg-1 is holding a stick in off hand:
+            send "%{aurora_prefix}% Para evitar errores se ha deshabilitado la opción de que tengas objetos o invocadores en la mano izquierda." to arg-1
+        else:
+            if arg-2 is 1:
+                execute console command "gh give wood_hook %arg-1%"
+                remove 1 of arg-1's tool from the arg-1
+
+function iaBoss(player: offline player, boss: text, bossName: text):
+    execute command "/lp user %{_player}% permission set advancedmobarena.command.join true"
+    wait 1 second
+    execute {_player} command "/ama join %{_boss}%"
+    execute command "/lp user %{_player}% permission set advancedmobarena.command.join false"
+    send "%{aurora_prefix}% Has desafiado a %{_bossName}%!" to {_player}
+
+#Comando utilizado por IA para la invocacion de bosses de la Tierra.
+command /sasboss <player> <number>:
+    permission: group.administrador
+    trigger:
+        if arg-1 is holding a paper in off hand:
+            send "%{aurora_prefix}% Para evitar errores se ha deshabilitado la opción de que tengas objetos curativos o invocadores en la mano izquierda." to arg-1
+        else:
+            if arg-1 is in world "tierra_1":
+                #Zombie Pulpo
+                if arg-2 is 1:
+                    iaBoss(arg-1,"tierra_zombiepulpo","Zombie Pulpo")
+                #Samurai
+                if arg-2 is 2:
+                    iaBoss(arg-1,"tierra_samurai","Zombie Samurai")
+                #Golem de Hielo
+                if arg-2 is 3:
+                    iaBoss(arg-1,"tierra_golem","Golem de Hielo")
+                #Arqueologo
+                if arg-2 is 4:
+                    iaBoss(arg-1,"tierra_arqueologo","Arqueólogo")
+                #Skeletor
+                if arg-2 is 5:
+                    iaBoss(arg-1,"tierra_skeletr","Skeletor")
+                wait 1 second
+                if arg-1 is not in world "tierra_1":
+                    remove 1 of arg-1's tool from the arg-1
+            else:
+                send "%{aurora_prefix}% Necesitas estar en el mundo Tierra" to arg-1
+
+#Comando utilizado por IA para la invocacion de bosses de la Nether.
+command /sasbossnether <player> <number>:
+    permission: group.administrador
+    trigger:
+        if arg-1 is holding a paper in off hand:
+            send "%{aurora_prefix}% Para evitar errores se ha deshabilitado la opción de que tengas objetos curativos o invocadores en la mano izquierda." to arg-1
+        else:
+            if arg-1 is in world "nether":
+                #Wither Chamuscado
+                if arg-2 is 1:
+                    iaBoss(arg-1,"nether_witherchamuscado","Wither Chamuscado")
+                #COLO COLO
+                if arg-2 is 2:
+                    iaBoss(arg-1,"nether_colocolo","Colo Colo")
+                #Miniboss del nether
+                if arg-2 is 6:
+                    execute console command "/mm egg give %arg-1% sas_tierra_Cupido"
+                    send "%{aurora_prefix}% Te he entregado un invocador de Cupido!" to arg-1
+                    remove 1 of arg-1's tool from the arg-1
+                if arg-1 is not in world "nether":
+                    remove 1 of arg-1's tool from the arg-1
+            else:
+                send "%{aurora_prefix}% Necesitas estar en el Nether" to arg-1
+
+#Comando utilizado por IA para aprender de libros.
+#Próxima a reducir xd
+command /saslearn <player> <number>:
+    permission: group.administrador
+    trigger:
+        if arg-1 is holding a paper or stick:
+            #El IA entenderá que si el argumento es 1, lo que intentará aprender es el Standard Galactic Alphabet 
+            if arg-2 is 1:
+                if arg-1 does not have permission "skill.enchant":
+                    if arg-1 have permission "ia.user.recipe.sabiduria13":
+                        remove 1 of arg-1's tool from the arg-1
+                        execute command "/lp user %arg-1% permission set skill.enchant true"
+                        send "%{aurora_prefix}% ¡Felicidades por aprender Standard Galactic Alphabet! Ahora al hacer click en una mesa de crafteo podrás encantar objetos." to arg-1
+                        stop
+                else:
+                    send "%{aurora_prefix}% Ya has aprendido este libro." to arg-1
+                    stop
+            #El IA entenderá que si el argumento es 2, lo que intentará aprender es el Hmmniano
+            else if arg-2 is 2:
+                if arg-1 does not have permission "skill.villager":
+                    if arg-1 have permission "ia.user.recipe.sabiduria14":
+                        remove 1 of arg-1's tool from the arg-1
+                        execute command "/lp user %arg-1% permission set skill.villager true"
+                        send "%{aurora_prefix}% ¡Felicidades por aprender Hmmniano! Ahora al hacer click en un aldeano podrás intercambiar con ellos." to arg-1
+                        stop
+                else:
+                    send "%{aurora_prefix}% Ya has aprendido este libro." to arg-1
+                    stop
+            if arg-2 is 5:
+                if arg-1 does not have permission "skill.pociones":
+                    if arg-1 have permission "ia.user.recipe.sabiduria21":
+                        remove 1 of arg-1's tool from the arg-1
+                        execute command "/lp user %arg-1% permission set skill.pociones true"
+                        send "%{aurora_prefix}% ¡Felicidades por aprender Libro de Recetas para Pociones! Ahora al hacer click en un stand de elaboración de pociones para crear pociones." to arg-1
+                        stop
+                else:
+                    send "%{aurora_prefix}% Ya has aprendido este libro." to arg-1
+                    stop        
+            #El IA entenderá que si el argumento es 3, lo que intentará aprender es el Pase a la Tierra
+            else if arg-2 is 3:
+                if arg-1 does not have permission "sas.tierra":
+                    if arg-1 does not have permission "ia.user.recipe.sabiduria11":
+                        send "%{aurora_prefix}% ¡No has completado el tutorial de Sabiduría!" to arg-1
+                        stop
+                    if arg-1 does not have permission "ia.user.recipe.herreria11":
+                        send "%{aurora_prefix}% ¡No has completado el tutorial de Herrería!" to arg-1
+                        stop
+                    if arg-1 does not have permission "ia.user.recipe.medicina11":
+                        send "%{aurora_prefix}% ¡No has completado el tutorial de Medicina!" to arg-1
+                        stop
+                    remove 1 of arg-1's tool from the arg-1
+                    execute command "/lp user %arg-1% permission set sas.tierra true"
+                    send "%{aurora_prefix}% ¡Felicidades por completar el tutorial! Utiliza el menú de mundos y ve a la Tierra." to arg-1
+                    stop
+            # El IA entendrá que si el argumento es 4, lo que intentará aprender es el grindstone
+            else if arg-2 is 4:
+                if arg-1 does not have permission "skill.grindstone":
+                    if arg-1 have permission "ia.user.recipe.sabiduria13":
+                        remove 1 of arg-1's tool from the arg-1
+                        execute command "/lp user %arg-1% permission set skill.grindstone true"
+                        send "%{aurora_prefix}% ¡Felicidades por aprender a usar la Afiladora! Ahora puedes quitar los encantamientos de un objeto y guardarlos en libros." to arg-1
+                        stop
+                else:
+                    send "%{aurora_prefix}% Ya has aprendido este pergamino." to arg-1
+                    stop
+            #Si los jugadores no tienen permisos para aprender un libro, entonces es porque no puede entenderlo.
+            send "%{aurora_prefix}% No eres capaz de entender esto." to arg-1

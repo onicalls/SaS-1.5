@@ -2,17 +2,6 @@
 # DEFINICIÓN DE FUNCIONES
 #-----------------------------
 
-# Comprueba si el jugador especificado tiene el permiso necesario y suficiente saldo para usar una habilidad.
-# Si el jugador tiene el permiso y suficiente saldo, se deduce el costo del saldo del jugador,
-# se otorga el permiso, se envía un mensaje al jugador y se reproduce un sonido.
-# Si el jugador no tiene el permiso o suficiente saldo, se envía un mensaje al jugador y se devuelve falso.
-#
-# @param player El jugador a comprobar.
-# @param permission El permiso necesario para usar la habilidad.
-# @param cost El costo de la habilidad en VM.
-# @param message El mensaje para enviar al jugador si la habilidad se compra con éxito.
-# @param loop Si se debe repetir el proceso o no.
-# @return Verdadero si el jugador ya tiene la habilidad, falso en caso contrario.
 function check_skill(player: offline player, permission: text, cost: number, message: text, loop: boolean):: boolean:
     if {_player} does not have permission {_permission}:
         if {_player}'s account is more than or equal to {_cost}:
@@ -25,6 +14,21 @@ function check_skill(player: offline player, permission: text, cost: number, mes
         return false
     return true
 
+
+function check_nether_skill(player: offline player, permission: text, cost: number, message: text, loop: boolean):: boolean:
+    if {_player} does not have permission {_permission}:
+        if {_player} has permission "sas.nether":
+            if {_player}'s account is more than or equal to {_cost}:
+                send "%{aurora_prefix}% %{_message}%" to {_player}
+                remove {_cost} from balance of {_player}
+                make console execute command "lp user %{_player}% permission set %{_permission}% true"
+                play sound "block.anvil.use" to {_player}
+            else:
+                send "%{aurora_prefix}% No tienes dinero suficiente. Para esta habilidad necesitas %{_cost}% VM." to {_player}
+        else:
+            send "%{aurora_prefix}% Debes desbloquear el nether para subir esta habilidad" to {_player}
+        return false
+    return true
 
 #-----------------------------
 # DEFINICIÓN DE REGLAS
@@ -42,8 +46,17 @@ on spawn of monster:
         loop blocks in radius 4 around event-entity:
             delete loop-block
 
+# Si un jugador utiliza polvo de hueso, se le quita 1 polvo de hueso y se le da 1 caña de azúcar.
+on rightclick on sugar cane with bone meal:
+    remove 1 bone meal from player
+    play sound "item.bone_meal.use" to player
+    drop 1 sugar cane at target block
+
+
+
 # Si un jugador muere, se borran todos los monstruos en un radio de 7 bloques
 on death of player:
+    victim is not in world "arena"
     loop all monsters in radius 7 around victim:
         clear loop-entity
 
@@ -72,7 +85,7 @@ on teleport:
     send "%{aurora_prefix}% Debes desbloquear el Pase al Nether! Revisa /quest y sigue las instrucciones."
 
 # Comprueba si el jugador entra a una región en la arena y lo envía de vuelta a towny.
-on region enter:
-    if player is in world "arena":
-        make player execute command "/warp towny"
-        make player execute command "/town spawn"
+#on region enter:
+#    if player is in world "arena":
+#        make player execute command "/warp towny"
+#        make player execute command "/town spawn"

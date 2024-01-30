@@ -1,0 +1,29 @@
+command /gachaitem <player> <number>:
+    permission: group.administrador
+    trigger:
+        #ID 1 = Velocidad de Samurai
+        if arg-2 is 1:
+            play sound "minecraft:block.anvil.place" with pitch 2 at arg-1
+            apply speed 10 to arg-1 for 3 seconds replacing existing effect
+        #ID 2 = Brazo de Golem
+        if arg-2 is 2:
+            play sound "minecraft:block.anvil.place" with pitch 2 at arg-1
+            loop all monsters in radius 4 around the arg-1:
+                push the loop-entity upwards at speed 2
+        #ID 3 = Mano de Arqueologo
+        if arg-2 is 3:
+            apply levitation 4 to arg-1 for 10 seconds replacing existing effect
+            set {_levitation} to 0
+            do while {_levitation} < 10:
+                wait 1 second
+                add 1 to {_levitation}
+                if arg-1 is sneaking:
+                    remove levitation from arg-1
+                    set {_levitation} to 10
+            apply slow falling 3 to arg-1 for 10 seconds replacing existing effect
+        #ID 4 = Tentáculos
+        if arg-2 is 4:
+            play sound "minecraft:block.anvil.place" with pitch 2 at arg-1
+            loop all monsters in radius 4 around the arg-1:
+                apply poison 2 to loop-entity for 5 seconds replacing existing effect
+                apply slowness 10 to the loop-entity for 3 seconds replacing existing effect

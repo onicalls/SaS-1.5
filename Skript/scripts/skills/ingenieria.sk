@@ -63,16 +63,16 @@ command /ingenieria:
         if check_skill(player, "ia.user.recipe.ingenieria14", 3600, "¡Has desbloqueado Ingeniería 4! Prueba craftear una máquina de combinación.", {_loop}) is false:
             stop
         #Ingeniería 5
-        if check_skill(player, "ia.user.recipe.ingenieria21", 3600, "¡Has desbloqueado Ingeniería 5! Prueba hacer la Máquina de Flechas.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.ingenieria21", 3600, "¡Has desbloqueado Ingeniería 5! Prueba hacer la Máquina de Flechas.", {_loop}) is false:
             stop
         #Ingeniería 6
-        if check_skill(player, "ia.user.recipe.ingenieria22", 4200, "¡Has desbloqueado Ingeniería 6! Prueba hacer el reciclador infernal pasivo.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.ingenieria22", 4200, "¡Has desbloqueado Ingeniería 6! Prueba hacer el reciclador infernal pasivo.", {_loop}) is false:
             stop
         #Ingeniería 7
-        if check_skill(player, "ia.user.recipe.ingenieria23", 6000, "¡Has desbloqueado Ingeniería 7! Prueba hacer el reciclador infernal agresivo.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.ingenieria23", 6000, "¡Has desbloqueado Ingeniería 7! Prueba hacer el reciclador infernal agresivo.", {_loop}) is false:
             stop
         #Ingeniería 8
-        if check_skill(player, "ia.user.recipe.ingenieria24", 9600, "¡Has desbloqueado Ingeniería 8! Prueba hacer el Aleador.", {_loop}) is false:
+        if check_nether_skill(player, "ia.user.recipe.ingenieria24", 9600, "¡Has desbloqueado Ingeniería 8! Prueba hacer el Aleador.", {_loop}) is false:
             stop
         else:
             send "%{aurora_prefix}% Ya tienes todos los niveles de Ingeniería."

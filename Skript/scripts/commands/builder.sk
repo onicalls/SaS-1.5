@@ -1,0 +1,5 @@
+#Comando para ir a buildear
+command /buildear:
+    permission: sas.build
+    trigger:
+        execute console command "/mv tp %player% arena"

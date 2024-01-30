@@ -1,0 +1,15 @@
+#----------------------------------------------------------------------------------------------------------------------
+#Comandos de Mods
+#----------------------------------------------------------------------------------------------------------------------
+
+command /cmute <offline player>:
+  permission: chat.mute
+  trigger:
+    execute console command "lp user %arg-1% permission set chat.talk false"
+    send "%{aurora_prefix}% has silenciado al jugador %arg-1%."
+        
+command /cunmute <offline player>:
+  permission: chat.mute
+  trigger:
+    execute console command "lp user %arg-1% permission set chat.talk true"
+    send "%{aurora_prefix}% has permitido el chat al jugador %arg-1%."
